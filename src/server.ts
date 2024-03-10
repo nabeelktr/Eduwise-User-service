@@ -37,7 +37,8 @@ const grpcServer = () => {
 server.addService(userpackage.User.service, {
     Register : controller.OnRegister.bind(controller),
     ActivateUser : controller.ActivateUser.bind(controller),
-    Login : controller.LoginUser.bind(controller)
+    Login : controller.LoginUser.bind(controller),
+
 } as UserHandlers)
 
 grpcServer();
