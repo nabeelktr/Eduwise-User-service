@@ -4,6 +4,7 @@ import { User } from "../model/user.entities";
 import { CreateActivationToken } from "./utils/activationToken";
 import jwt, { Secret } from 'jsonwebtoken';
 import 'dotenv/config';
+import { IUser } from "../model/schemas/user.schema";
 
 export class UserService implements IUserService {
 
@@ -34,10 +35,12 @@ export class UserService implements IUserService {
         try{
             const isEmailExist = await this.repository.findOne(userData.email);
             if(isEmailExist){
-                return null;
-            }
+                // return null;
+                throw new Error("Email Already Exists")
+            }else{
             const activationToken = CreateActivationToken(userData);
             return activationToken
+            }
         }catch(err){
             return null;
         }
@@ -60,7 +63,8 @@ export class UserService implements IUserService {
         return {accessToken, refreshToken}
     }
     
-    getUser(email: string): Promise<User | null> {
-        return this.repository.findOne(email)
+    async getUser(id: string): Promise<User | null> {
+        const user = await this.repository.findById(id)
+        return user
     }
 }

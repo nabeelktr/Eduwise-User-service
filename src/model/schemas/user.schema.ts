@@ -9,7 +9,7 @@ const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export interface IUser extends Document {
     name: string;
     email: string;
-    password: string;
+    password?: string;
     avatar: {
         public_id: string;
         url: string;
@@ -77,7 +77,7 @@ userSchema.pre<IUser>('save', async function(next) {
     if(!this.isModified){
         next()
     }
-    this.password = await bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password || '', 10)
     next();
 });
 

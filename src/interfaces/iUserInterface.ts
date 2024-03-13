@@ -13,6 +13,6 @@ export interface IUserService {
         activationCode: string,
     }):any;
 
-    getUser(email:string):Promise<User | null>;
+    getUser(id:string):Promise<User | null>;
     userLogin(email: string, password: string):any;
 }

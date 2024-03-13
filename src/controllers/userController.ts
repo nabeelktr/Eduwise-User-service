@@ -1,5 +1,8 @@
 import {UserHandlers} from '../../proto/user_package/User'
 import { IUserService } from "../interfaces/iUserInterface";
+import publisher from '../events/publisher/user.publisher'
+import { IUser } from '../model/schemas/user.schema';
+import { User } from '../model/user.entities';
 
 export class UserController {
 
@@ -13,13 +16,15 @@ export class UserController {
         try{
             const request = call.request as { name: string; email: string; password: string; };
             const response = await this.service.userRegister(request)
-            console.log(response);
             if(!response){
-                callback(null, {
-                    msg : "Email Already exist",
-                    data : {},
-                    status: 409})
+                throw new Error("Email Already Exists")
             }else{
+                const data = {
+                    code: response.activationCode,
+                    name: request.name,
+                    email: request.email
+                }
+                publisher.ActivationCode(data);
                 callback(null, {
                     msg : "Activation code send to the email",
                     data: response,
@@ -56,6 +61,17 @@ export class UserController {
 
             callback(null, response)
         }catch(e: any){
+            callback(e, null)
+        }
+    }
+
+    GetUser: UserHandlers['GetUser'] = async(call, callback) => {
+        try{
+            const response: any = await this.service.getUser(call.request.id as string)
+            if(response){
+                callback(null, response);
+            }
+        }catch(e:any){
             callback(e, null)
         }
     }

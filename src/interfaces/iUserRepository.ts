@@ -5,4 +5,5 @@ import { User } from "../model/user.entities";
 export interface IUserRepository {
     register(userData: User): any;
     findOne(email: string): Promise<IUser | null>;
+    findById(id: string): Promise<IUser | null>;
 }
