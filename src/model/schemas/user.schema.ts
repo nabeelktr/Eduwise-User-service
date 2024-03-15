@@ -42,12 +42,14 @@ const userSchema: Schema<IUser> =  new mongoose.Schema({
 
     password: {
         type: String,
-        required: [true, "Please enter your password"]
     },
    
+    // avatar: {
+    //     public_id: String,
+    //     url: String,
+    // },
     avatar: {
-        public_id: String,
-        url: String,
+        type: String,
     },
 
     role: {

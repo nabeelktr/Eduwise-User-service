@@ -1,8 +1,6 @@
 import {UserHandlers} from '../../proto/user_package/User'
 import { IUserService } from "../interfaces/iUserInterface";
 import publisher from '../events/publisher/user.publisher'
-import { IUser } from '../model/schemas/user.schema';
-import { User } from '../model/user.entities';
 
 export class UserController {
 
@@ -58,7 +56,6 @@ export class UserController {
         try{
             const {email, password} = call.request as {email: string, password: string}
             const response = await this.service.userLogin(email, password)
-
             callback(null, response)
         }catch(e: any){
             callback(e, null)
@@ -72,6 +69,46 @@ export class UserController {
                 callback(null, response);
             }
         }catch(e:any){
+            callback(e, null)
+        }
+    }
+
+    SocialAuth: UserHandlers['SocialAuth'] = async(call, callback) => {
+        try{
+            const request = call.request as {email:string, name:string, avatar:string};
+            const response = await this.service.userRegister(request);
+            callback(null, response)
+        }catch(e:any){
+            callback(e, null)
+        }
+    }
+
+    UpdateUserInfo: UserHandlers['UpdateUserInfo'] = async(call, callback) => {
+        try{
+            const {userId, name} = call.request as {userId:string, name:string};
+            const response = await this.service.updateUserInfo(userId, name)
+            callback(null, response);
+        }catch(e: any){
+            callback(e, null)
+        }
+    }
+
+    updateAvatar: UserHandlers['UpdateAvatar'] = async(call, callback) => {
+        try{
+            const {data, filename, mimetype, id} = call.request as {data: Buffer, filename: string, mimetype: string, id:string};
+            const response = await this.service.updateAvatar(data, filename, mimetype, id)
+            callback(null, {status: 201, msg:"avatar updated"})
+        }catch(e: any){
+            callback(e, null)
+        }
+    }
+
+    updatePassword: UserHandlers['UpdatePassword'] = async(call, callback) => {
+        try{
+            const {oldPassword, newPassword, userId} = call.request as {oldPassword: string, newPassword:string, userId: string}
+            const reponse = await this.service.updatePassword(oldPassword, newPassword, userId)
+            callback(null, {msg: "password updated", status:200})
+        }catch(e: any){
             callback(e, null)
         }
     }

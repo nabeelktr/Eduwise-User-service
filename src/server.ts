@@ -39,6 +39,10 @@ server.addService(userpackage.User.service, {
     ActivateUser : controller.ActivateUser.bind(controller),
     Login : controller.LoginUser.bind(controller),
     GetUser: controller.GetUser.bind(controller),
+    SocialAuth: controller.SocialAuth.bind(controller),
+    UpdateUserInfo: controller.UpdateUserInfo.bind(controller),
+    UpdateAvatar: controller.updateAvatar.bind(controller),
+    UpdatePassword: controller.updatePassword.bind(controller),
 
 } as UserHandlers)
 
