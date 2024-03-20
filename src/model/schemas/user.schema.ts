@@ -44,17 +44,14 @@ const userSchema: Schema<IUser> =  new mongoose.Schema({
         type: String,
     },
    
-    // avatar: {
-    //     public_id: String,
-    //     url: String,
-    // },
     avatar: {
         type: String,
     },
 
     role: {
         type: String,
-        default: "user",
+        enum: ["user", "admin", "instructor"],
+        default: "user"
     },
 
     isVerified: {
