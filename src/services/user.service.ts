@@ -4,14 +4,12 @@ import { User } from "../model/user.entities";
 import { CreateActivationToken } from "./utils/activationToken";
 import jwt, { Secret } from "jsonwebtoken";
 import "dotenv/config";
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { S3Params } from "./types/interface";
 import { s3 } from "./utils/s3";
 import crypto from "crypto";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import sharp from "sharp";
-import bcrypt from 'bcryptjs';
-
+import bcrypt from "bcryptjs";
 
 export class UserService implements IUserService {
   private repository: IUserRepository;
@@ -19,24 +17,35 @@ export class UserService implements IUserService {
   constructor(repository: IUserRepository) {
     this.repository = repository;
   }
-    async updatePassword(oldPassword: string, newPassword: string, userId: string) {
-        const user = await this.repository.findById(userId)
-        const isPasswordMatch = await user?.comparePassword(oldPassword)
-        if(!isPasswordMatch){
-            throw new Error("Invalid Password")
-        }
-        const password = await bcrypt.hash(newPassword || '', 10)
-        await this.repository.updatePassword(userId, password)
-        return
+  async updatePassword(
+    oldPassword: string,
+    newPassword: string,
+    userId: string
+  ) {
+    const user = await this.repository.findById(userId);
+    const isPasswordMatch = await user?.comparePassword(oldPassword);
+    if (!isPasswordMatch) {
+      throw new Error("Invalid Password");
     }
+    const password = await bcrypt.hash(newPassword || "", 10);
+    await this.repository.updatePassword(userId, password);
+    return;
+  }
 
-  async updateAvatar(data: Buffer, fieldName: string, mimeType: string, id: string) {
+  async updateAvatar(
+    data: Buffer,
+    fieldName: string,
+    mimeType: string,
+    id: string
+  ) {
     const randomImageName = (bytes = 32) =>
       crypto.randomBytes(bytes).toString("hex");
     const bucketName = process.env.S3_BUCKET_NAME || "";
-    const buffer = await sharp(data).resize({height: 600, width: 600, fit: "cover"}).toBuffer()
+    const buffer = await sharp(data)
+      .resize({ height: 600, width: 600, fit: "cover" })
+      .toBuffer();
 
-    const imageName = `eduwise-profile/${randomImageName()}`
+    const imageName = `eduwise-profile/${randomImageName()}`;
     const params: S3Params = {
       Bucket: bucketName,
       Key: imageName,
@@ -44,15 +53,15 @@ export class UserService implements IUserService {
       ContentType: mimeType,
     };
     const command = new PutObjectCommand(params);
-    await s3.send(command);
-    const objectCommand = new GetObjectCommand({
-        Bucket: bucketName,
-        Key: imageName,
-    });
 
-    const url = await getSignedUrl(s3, objectCommand, { expiresIn: 60  * 1000  });
-    console.log('url',url);
-    await this.repository.avatarUpdate(id, url)
+    const rslt = await s3.send(command);
+    // const objectCommand = new GetObjectCommand({
+    //     Bucket: bucketName,
+    //     Key: imageName,
+    // });
+    // const url = await getSignedUrl(s3, objectCommand, { expiresIn: 36000  });
+    const url = `https://eduwise.s3.ap-south-1.amazonaws.com/${imageName}`;
+    await this.repository.avatarUpdate(id, url);
     return { success: true };
   }
 
