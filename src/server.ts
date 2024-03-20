@@ -35,12 +35,12 @@ const grpcServer = () => {
 }
 
 server.addService(userpackage.User.service, {
-    Register : controller.OnRegister.bind(controller),
-    ActivateUser : controller.ActivateUser.bind(controller),
-    Login : controller.LoginUser.bind(controller),
-    GetUser: controller.GetUser.bind(controller),
-    SocialAuth: controller.SocialAuth.bind(controller),
-    UpdateUserInfo: controller.UpdateUserInfo.bind(controller),
+    Register : controller.onRegister.bind(controller),
+    ActivateUser : controller.activateUser.bind(controller),
+    Login : controller.loginUser.bind(controller),
+    GetUser: controller.getUser.bind(controller),
+    SocialAuth: controller.socialAuth.bind(controller),
+    UpdateUserInfo: controller.updateUserInfo.bind(controller),
     UpdateAvatar: controller.updateAvatar.bind(controller),
     UpdatePassword: controller.updatePassword.bind(controller),
 

@@ -10,7 +10,7 @@ export class UserController {
         this.service = service;
     }
 
-    OnRegister : UserHandlers['Register']= async (call, callback) => {
+    onRegister : UserHandlers['Register']= async (call, callback) => {
         try{
             const request = call.request as { name: string; email: string; password: string; };
             const response = await this.service.userRegister(request)
@@ -35,7 +35,7 @@ export class UserController {
         }
     }
 
-    ActivateUser: UserHandlers['ActivateUser'] = async (call, callback) => {
+    activateUser: UserHandlers['ActivateUser'] = async (call, callback) => {
         try{
             const request = call.request as {token: string, activationCode: string};
             const response = await this.service.activateUser(request)
@@ -52,7 +52,7 @@ export class UserController {
         }
     }
 
-    LoginUser: UserHandlers['Login']= async (call, callback) => {
+    loginUser: UserHandlers['Login']= async (call, callback) => {
         try{
             const {email, password} = call.request as {email: string, password: string}
             const response = await this.service.userLogin(email, password)
@@ -62,7 +62,7 @@ export class UserController {
         }
     }
 
-    GetUser: UserHandlers['GetUser'] = async(call, callback) => {
+    getUser: UserHandlers['GetUser'] = async(call, callback) => {
         try{
             const response: any = await this.service.getUser(call.request.id as string)
             if(response){
@@ -73,7 +73,7 @@ export class UserController {
         }
     }
 
-    SocialAuth: UserHandlers['SocialAuth'] = async(call, callback) => {
+    socialAuth: UserHandlers['SocialAuth'] = async(call, callback) => {
         try{
             const request = call.request as {email:string, name:string, avatar:string};
             const response = await this.service.userRegister(request);
@@ -83,7 +83,7 @@ export class UserController {
         }
     }
 
-    UpdateUserInfo: UserHandlers['UpdateUserInfo'] = async(call, callback) => {
+    updateUserInfo: UserHandlers['UpdateUserInfo'] = async(call, callback) => {
         try{
             const {userId, name} = call.request as {userId:string, name:string};
             const response = await this.service.updateUserInfo(userId, name)
