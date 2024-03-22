@@ -10,6 +10,7 @@ import { s3 } from "./utils/s3";
 import crypto from "crypto";
 import sharp from "sharp";
 import bcrypt from "bcryptjs";
+import { IUser } from "../model/schemas/user.schema";
 
 export class UserService implements IUserService {
   private repository: IUserRepository;
@@ -94,7 +95,7 @@ export class UserService implements IUserService {
     return this.repository.register(newUser.user);
   }
 
-  async userRegister(userData: any) {
+  async userRegister(userData: User) {
     try {
       const isEmailExist = await this.repository.findOne(userData.email);
       if (isEmailExist) {
@@ -111,8 +112,8 @@ export class UserService implements IUserService {
           return activationToken;
         }
         const user = await this.repository.register(userData);
-        const accessToken = user.SignAccessToken();
-        const refreshToken = user.SignRefreshToken();
+        const accessToken = user?.SignAccessToken();
+        const refreshToken = user?.SignRefreshToken();
         return { accessToken, refreshToken, user };
       }
     } catch (err) {

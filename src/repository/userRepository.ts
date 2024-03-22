@@ -38,7 +38,7 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  register(userData: User): any {
+  register(userData: User): Promise<IUser | null> {
     try {
       return UserModel.create(userData);
     } catch (e: any) {

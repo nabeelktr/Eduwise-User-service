@@ -1,18 +1,18 @@
-enum UserRole {
-    User = "user",
-    Admin = "admin",
-    Instructor = "instructor"
+export enum UserRole {
+  User = "user",
+  Admin = "admin",
+  Instructor = "instructor",
 }
 
 export class User {
-    constructor(
-        public readonly email: string,
-        public readonly name: string,
-        public readonly avatar: string,
-        public readonly role: UserRole,
-        public readonly isVerified: boolean,
-        public readonly courses?: Array<{courseId: string}>,
-        public  password?: string,
-        public readonly _id?: string,
-    ){}
+  constructor(
+    public readonly email: string,
+    public readonly name: string,
+    public readonly avatar: string,
+    public readonly role: UserRole,
+    public readonly isVerified: boolean,
+    public readonly courses?: Array<{ courseId: string }>,
+    public password?: string,
+    public readonly _id?: string
+  ) {}
 }
