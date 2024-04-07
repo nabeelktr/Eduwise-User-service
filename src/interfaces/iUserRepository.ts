@@ -8,4 +8,6 @@ export interface IUserRepository {
   findByIdAndUpdate(id: string, name: string): Promise<IUser | null>;
   avatarUpdate(id: string, avatar: string): Promise<IUser | null>;
   updatePassword(id: string, password: string): Promise<IUser | null>;
+  getUsers(): any;
+  getInstructors():any;
 }

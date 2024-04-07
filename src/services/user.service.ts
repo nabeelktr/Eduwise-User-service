@@ -10,13 +10,18 @@ import { s3 } from "./utils/s3";
 import crypto from "crypto";
 import sharp from "sharp";
 import bcrypt from "bcryptjs";
-import { IUser } from "../model/schemas/user.schema";
 
 export class UserService implements IUserService {
   private repository: IUserRepository;
 
   constructor(repository: IUserRepository) {
     this.repository = repository;
+  }
+  getInstructors() {
+    return this.repository.getInstructors();
+  }
+  getUsers() {
+    return this.repository.getUsers();
   }
   async updatePassword(
     oldPassword: string,
@@ -56,11 +61,6 @@ export class UserService implements IUserService {
     const command = new PutObjectCommand(params);
 
     const rslt = await s3.send(command);
-    // const objectCommand = new GetObjectCommand({
-    //     Bucket: bucketName,
-    //     Key: imageName,
-    // });
-    // const url = await getSignedUrl(s3, objectCommand, { expiresIn: 36000  });
     const url = `https://eduwise.s3.ap-south-1.amazonaws.com/${imageName}`;
     await this.repository.avatarUpdate(id, url);
     return { success: true };

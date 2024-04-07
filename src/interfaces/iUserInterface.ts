@@ -18,4 +18,6 @@ export interface IUserService {
     id: string
   ): any;
   updatePassword(oldPassword: string, newPassword: string, userId: string): any;
+  getUsers(): any;
+  getInstructors(): any;
 }

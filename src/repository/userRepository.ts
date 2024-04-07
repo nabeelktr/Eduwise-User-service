@@ -3,18 +3,27 @@ import UserModel, { IUser } from "../model/schemas/user.schema";
 import { User } from "../model/user.entities";
 
 export class UserRepository implements IUserRepository {
+  getInstructors() {
+    const instructors = UserModel.find({ role: "instructor" });
+    return instructors;
+  }
+
+  async getUsers() {
+    const users = UserModel.find({ role: "user" });
+    return users;
+  }
 
   updatePassword(id: string, password: string): Promise<IUser | null> {
-    try{
-      return UserModel.findByIdAndUpdate(id, {password})
+    try {
+      return UserModel.findByIdAndUpdate(id, { password });
     } catch (e: any) {
       throw new Error("db error");
     }
   }
 
   avatarUpdate(id: string, avatar: string): Promise<IUser | null> {
-    try{
-      return UserModel.findByIdAndUpdate(id, {avatar})
+    try {
+      return UserModel.findByIdAndUpdate(id, { avatar });
     } catch (e: any) {
       throw new Error("db error");
     }

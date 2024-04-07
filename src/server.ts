@@ -8,6 +8,8 @@ import { ProtoGrpcType } from "../proto/user";
 import { UserRepository } from "./repository/userRepository";
 import { UserService } from "./services/user.service";
 import { UserController } from "./controllers/userController";
+import RabbitMQClient from "./events/rabbitmq/client";
+
 
 connectDB();
 
@@ -17,7 +19,7 @@ const userpackage = grpcObject.user_package
 
 const repository = new UserRepository()
 const service = new UserService(repository);
-const controller = new UserController(service)
+export const controller = new UserController(service)
 
 const server = new grpc.Server()
 
@@ -47,3 +49,4 @@ server.addService(userpackage.User.service, {
 } as UserHandlers)
 
 grpcServer();
+RabbitMQClient.initialize();

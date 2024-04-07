@@ -112,4 +112,22 @@ export class UserController {
             callback(e, null)
         }
     }
+
+    getUsers = async () => {
+        try{
+            const response = await this.service.getUsers()
+            return response
+        }catch(e:any){
+            console.log(e);
+        }
+    }
+
+    getInstructors = async () => {
+        try{
+            const response = await this.service.getInstructors()
+            return response
+        }catch(e:any){
+            console.log(e);
+        }
+    }
 }
