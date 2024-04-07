@@ -130,4 +130,13 @@ export class UserController {
             console.log(e);
         }
     }
+
+    deleteUser = async (userId:string) => {
+        try{
+            const response = await this.service.deleteUser(userId)
+            return response
+        }catch(e:any){
+            console.log(e);
+        }
+    }
 }

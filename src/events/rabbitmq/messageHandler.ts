@@ -19,6 +19,10 @@ export default class MessageHandler {
         response = await controller.getInstructors.bind(controller)();
         break;
 
+      case "delete-user":
+        response = await controller.deleteUser.bind(controller)(data);
+        break;
+
       default:
         response = "Request-key notfound";
         break;

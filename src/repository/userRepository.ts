@@ -3,14 +3,32 @@ import UserModel, { IUser } from "../model/schemas/user.schema";
 import { User } from "../model/user.entities";
 
 export class UserRepository implements IUserRepository {
+  
+  async deleteUser(userId: string): Promise<Object> {
+    try{
+      await UserModel.findByIdAndDelete(userId)
+      return {success: true}
+    }catch(e:any){
+      throw new Error("db error")
+    }
+  }
+
   getInstructors() {
-    const instructors = UserModel.find({ role: "instructor" });
-    return instructors;
+    try {
+      const instructors = UserModel.find({ role: "instructor" });
+      return instructors;
+    } catch (e: any) {
+      throw new Error("db error");
+    }
   }
 
   async getUsers() {
-    const users = UserModel.find({ role: "user" });
-    return users;
+    try {
+      const users = UserModel.find({ role: "user" });
+      return users;
+    } catch (e: any) {
+      throw new Error("db error");
+    }
   }
 
   updatePassword(id: string, password: string): Promise<IUser | null> {

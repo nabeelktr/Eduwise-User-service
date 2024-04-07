@@ -20,4 +20,5 @@ export interface IUserService {
   updatePassword(oldPassword: string, newPassword: string, userId: string): any;
   getUsers(): any;
   getInstructors(): any;
+  deleteUser(userId:string): Promise<Object>;
 }

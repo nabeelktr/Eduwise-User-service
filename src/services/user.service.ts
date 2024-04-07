@@ -17,12 +17,19 @@ export class UserService implements IUserService {
   constructor(repository: IUserRepository) {
     this.repository = repository;
   }
+
+  deleteUser(userId: string): Promise<Object> {
+    return this.repository.deleteUser(userId);
+  }
+
   getInstructors() {
     return this.repository.getInstructors();
   }
+
   getUsers() {
     return this.repository.getUsers();
   }
+  
   async updatePassword(
     oldPassword: string,
     newPassword: string,
