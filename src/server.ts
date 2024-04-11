@@ -45,7 +45,7 @@ server.addService(userpackage.User.service, {
     UpdateUserInfo: controller.updateUserInfo.bind(controller),
     UpdateAvatar: controller.updateAvatar.bind(controller),
     UpdatePassword: controller.updatePassword.bind(controller),
-
+    UpdateCourseList: controller.updateCourseList.bind(controller),
 } as UserHandlers)
 
 grpcServer();

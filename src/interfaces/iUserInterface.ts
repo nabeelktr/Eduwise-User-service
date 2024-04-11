@@ -21,4 +21,5 @@ export interface IUserService {
   getUsers(): any;
   getInstructors(): any;
   deleteUser(userId:string): Promise<Object>;
+  updateCourseList(userId: string, courseId: string): any;
 }

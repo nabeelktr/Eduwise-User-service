@@ -11,6 +11,12 @@ service User {
   rpc UpdateUserInfo(UpdateUserInfoReq) returns(UserRes) {};
   rpc UpdateAvatar(AvatarReq) returns(UserRes) {};
   rpc UpdatePassword(PasswordReq) returns(UserRes) {};
+  rpc UpdateCourseList(CourseList) returns(UserRes) {};
+}
+
+message CourseList{
+  string course_id= 1;
+  string user_id = 2;
 }
 
 message PasswordReq{
@@ -48,6 +54,11 @@ message GetUserResponse{
   string name = 2;
   string role = 4;
   string is_verified = 5;
+  repeated Courses courses = 7;
+}
+
+message Courses{
+  string course_id = 1;
 }
 
 message UserRes{
@@ -82,7 +93,6 @@ message LoginRequest {
 message LoginResponse {
   string access_token = 1;
   string refresh_token = 2;
-
   User user = 3;
   
   message User{
@@ -91,6 +101,7 @@ message LoginResponse {
     string avatar = 3;
     string role = 4;
     string is_verified = 5;
+    repeated Courses courses = 6;
   }
 }
 

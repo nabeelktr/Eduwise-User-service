@@ -18,6 +18,11 @@ export class UserService implements IUserService {
     this.repository = repository;
   }
 
+  async updateCourseList(userId: string, courseId: string) {
+    await this.repository.updateCourseList(userId, courseId);
+    return;
+  }
+
   deleteUser(userId: string): Promise<Object> {
     return this.repository.deleteUser(userId);
   }
@@ -29,7 +34,7 @@ export class UserService implements IUserService {
   getUsers() {
     return this.repository.getUsers();
   }
-  
+
   async updatePassword(
     oldPassword: string,
     newPassword: string,

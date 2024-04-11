@@ -139,4 +139,14 @@ export class UserController {
             console.log(e);
         }
     }
+
+    updateCourseList: UserHandlers['UpdateCourseList'] = async(call, callback) => {
+        try{
+            const { userId, courseId} = call.request as {userId: string, courseId: string}
+            const reponse = await this.service.updateCourseList( userId, courseId)
+            callback(null, {msg: "course list updated", status:200})
+        }catch(e: any){
+            callback(e, null)
+        }
+    }
 }

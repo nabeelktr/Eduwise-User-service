@@ -3,13 +3,26 @@ import UserModel, { IUser } from "../model/schemas/user.schema";
 import { User } from "../model/user.entities";
 
 export class UserRepository implements IUserRepository {
-  
+
+  async updateCourseList(userId: string, courseId: string): Promise<IUser | null> {
+    try {
+      const user = await UserModel.findById(
+        userId
+      );
+      user?.courses.push({courseId})
+      await user?.save()
+      return null;
+    } catch (e: any) {
+      throw new Error("db error");
+    }
+  }
+
   async deleteUser(userId: string): Promise<Object> {
-    try{
-      await UserModel.findByIdAndDelete(userId)
-      return {success: true}
-    }catch(e:any){
-      throw new Error("db error")
+    try {
+      await UserModel.findByIdAndDelete(userId);
+      return { success: true };
+    } catch (e: any) {
+      throw new Error("db error");
     }
   }
 
