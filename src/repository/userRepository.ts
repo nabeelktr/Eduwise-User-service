@@ -4,13 +4,44 @@ import { User } from "../model/user.entities";
 
 export class UserRepository implements IUserRepository {
 
-  async updateCourseList(userId: string, courseId: string): Promise<IUser | null> {
+  async getUserAnalytics(instructorId: string): Promise<Object[] | null> {
     try {
-      const user = await UserModel.findById(
-        userId
-      );
-      user?.courses.push({courseId})
-      await user?.save()
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+      const matchStage: any = {
+        $match: {
+          createdAt: { $gte: twelveMonthsAgo },
+        },
+      };
+      if (instructorId !== "admin") {
+        matchStage.$match.instructorId = instructorId;
+      }
+
+      const response = await UserModel.aggregate([
+        matchStage,
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      return response || [];
+    } catch (e: any) {
+      throw new Error("db error");
+    }
+  }
+
+  async updateCourseList(
+    userId: string,
+    courseId: string
+  ): Promise<IUser | null> {
+    try {
+      const user = await UserModel.findById(userId);
+      user?.courses.push({ courseId });
+      await user?.save();
       return null;
     } catch (e: any) {
       throw new Error("db error");

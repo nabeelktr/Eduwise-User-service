@@ -1,6 +1,7 @@
 import { User } from "../model/user.entities";
 
 export interface IUserService {
+  getUserAnalytics(instructorId: string): Promise<[{month: string, count:number}] | null>;
   userRegister(userData: {
     name: string;
     email: string;

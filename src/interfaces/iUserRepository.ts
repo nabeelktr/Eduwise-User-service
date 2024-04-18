@@ -2,6 +2,7 @@ import { IUser } from "../model/schemas/user.schema";
 import { User } from "../model/user.entities";
 
 export interface IUserRepository {
+  getUserAnalytics(instructorId: string): Promise<Object[] | null>;
   register(userData: User): Promise<IUser | null>;
   findOne(email: string): Promise<IUser | null>;
   findById(id: string): Promise<IUser | null>;
